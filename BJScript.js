@@ -273,7 +273,7 @@ var new_game = function(){
 	stay_ind = false
 
 	document.getElementById("record").rows[0].innerHTML = "Chips = " + chips
-	
+
 	document.getElementById("record").rows[1].cells[0].innerHTML = "Wins"
 
 	document.getElementById("record").rows[1].cells[1].innerHTML = "Loses"
@@ -287,7 +287,13 @@ var new_game = function(){
 	winsLosses[1] = 0
 
 	//Gets the bet. If they press cancel or submit 0 there is no bet
-	bet=prompt("You have " + chips + " chips. Please enter your bet","0");
+
+	if(chips === 0){
+		chips = 1000;
+		bet=prompt("You lost all your chips :( Since I am so generous here are 1000 more :) Please enter your bet","0");
+	}else{
+		bet=prompt("You have " + chips + " chips. Please enter your bet","0");
+	}
 
 	while (bet > chips){
 
