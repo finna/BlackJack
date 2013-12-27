@@ -14,6 +14,10 @@ var soft_ind = false
 
 var winsLosses = []
 
+var chips = 1000
+
+var bet = 0
+
 
 
 var Suits = ["&spades;","&clubs;","&diams;","&hearts;"]
@@ -93,7 +97,7 @@ if(scorer(TheHand)===21){
 }
 
 
-
+//Process and style hand
 var Display = function(Hand,TheDisplay){
 
 	var TheSuit = Suits[Math.floor(Math.random()*4)]
@@ -174,8 +178,16 @@ var stay = function(){
 
 };
 
+
+//Writes hand to screen
+//user is the div ID of the hand
+// hand is the hand after it's been processed by Display()
 var writeHand = function(user, hand){
+
+	//clear existing hand
 	document.getElementById(user).innerHTML = ""
+
+	//write hand to div
 	for(var i = 0; i <hand.length; i++){
 
 		document.getElementById(user).innerHTML  += hand[i] + " "
@@ -194,7 +206,7 @@ var write_to_screen = function(){
 
 		winsLosses[1] ++
 
-		document.getElementById("record").rows[1].cells[1].innerHTML = winsLosses[1]
+		document.getElementById("record").rows[2].cells[1].innerHTML = winsLosses[1]
 
 	}else if(scorer(CompHand)>21){
 
@@ -202,9 +214,11 @@ var write_to_screen = function(){
 
 		gameOver = true
 
+		chips += bet * 2;
+
 		winsLosses[0] ++
 
-		document.getElementById("record").rows[1].cells[0].innerHTML = winsLosses[0]
+		document.getElementById("record").rows[2].cells[0].innerHTML = winsLosses[0]
 
 	}else if(scorer(CompHand)>scorer(YourHand) && stay_ind){
 
@@ -214,7 +228,7 @@ var write_to_screen = function(){
 
 		winsLosses[1] ++
 
-		document.getElementById("record").rows[1].cells[1].innerHTML = winsLosses[1]
+		document.getElementById("record").rows[2].cells[1].innerHTML = winsLosses[1]
 
 	}else if(scorer(CompHand)<scorer(YourHand) && stay_ind){
 
@@ -222,15 +236,19 @@ var write_to_screen = function(){
 
 		gameOver = true
 
+		chips += bet * 2;
+
 		winsLosses[0] ++
 
-		document.getElementById("record").rows[1].cells[0].innerHTML = winsLosses[0]
+		document.getElementById("record").rows[2].cells[0].innerHTML = winsLosses[0]
 
 	}else if(scorer(CompHand)===scorer(YourHand) && stay_ind){
 
 				document.getElementById("message").innerHTML = "You have " +scorer(YourHand)+ " to the Dealer's " + scorer(CompHand) +". You Push."
 
 		gameOver = true
+
+		chips += bet;
 
 	};		
 
@@ -254,17 +272,43 @@ var new_game = function(){
 
 	stay_ind = false
 
+	document.getElementById("record").rows[0].innerHTML = "Chips = " + chips
+	
+	document.getElementById("record").rows[1].cells[0].innerHTML = "Wins"
+
+	document.getElementById("record").rows[1].cells[1].innerHTML = "Loses"
+
+	document.getElementById("record").rows[2].cells[0].innerHTML = 0
+
+	document.getElementById("record").rows[2].cells[1].innerHTML = 0
+
+	winsLosses[0] = 0
+
+	winsLosses[1] = 0
+
+	//Gets the bet. If they press cancel or submit 0 there is no bet
+	bet=prompt("You have " + chips + " chips. Please enter your bet","0");
+
+	while (bet > chips){
+
+		bet=prompt("Not enough chips. You have " + chips + " chips. Please enter your bet","0");
+	}
+
+	chips -= bet;
+
+	document.getElementById("record").rows[0].innerHTML = "Chips = " + chips
+
 	for(var i = 0; i <8; i++){
 
-		document.getElementById("computerHand").innerHTML = ""
+		document.getElementById("computerHand").innerHTML = "";
 
-		document.getElementById("userHand").innerHTML = ""
+		document.getElementById("userHand").innerHTML = "";
 
 	}
 
 
 
-	document.getElementById("message").innerHTML = "Hit or Stay?"
+	document.getElementById("message").innerHTML = "Hit or Stay?";
 
 
 
@@ -274,7 +318,7 @@ Display(CompHand,CompHandDisplay);
 
 CompHand.push(Math.floor(Math.random()*13 +1));
 
-writeHand("computerHand", CompHandDisplay)
+writeHand("computerHand", CompHandDisplay);
 
 
 
@@ -285,22 +329,22 @@ writeHand("computerHand", CompHandDisplay)
 		Display(YourHand,YourHandDisplay);
 
 	};
-writeHand("userHand", YourHandDisplay)
+writeHand("userHand", YourHandDisplay);
 
 
 if(CheckBJ(CompHand) === true && CheckBJ(YourHand) === false){
 
 	Display(CompHand,CompHandDisplay);
 
-	writeHand("computerHand", CompHandDisplay)
+	writeHand("computerHand", CompHandDisplay);
 
-	document.getElementById("message").innerHTML = "DEALER BLACKJACK! YOU LOSE!"
+	document.getElementById("message").innerHTML = "DEALER BLACKJACK! YOU LOSE!";
 
-	winsLosses[1] += 1.5
+	winsLosses[1] += 1.5;
 
-	document.getElementById("record").rows[1].cells[1].innerHTML = winsLosses[1]
+	document.getElementById("record").rows[2].cells[1].innerHTML = winsLosses[1];
 
-	gameOver = true
+	gameOver = true;
 
 }
 
@@ -310,15 +354,17 @@ if(CheckBJ(YourHand) === true && CheckBJ(CompHand) === false){
 
 	Display(CompHand,CompHandDisplay);
 
-	writeHand("computerHand", CompHandDisplay)
+	writeHand("computerHand", CompHandDisplay);
 
 	document.getElementById("message").innerHTML = "YOU HAVE BLACKJACK! YOU WIN!"
 
-	winsLosses[0] += 1.5
+	winsLosses[0] += 1.5;
 
-	document.getElementById("record").rows[1].cells[0].innerHTML = winsLosses[0]
+	chips += bet * 2.5;
 
-	gameOver = true
+	document.getElementById("record").rows[2].cells[0].innerHTML = winsLosses[0];
+
+	gameOver = true;
 
 }
 
@@ -328,9 +374,11 @@ if(CheckBJ(YourHand) === true && CheckBJ(CompHand) === true){
 
 	Display(CompHand,CompHandDisplay);
 
-	writeHand("computerHand", CompHandDisplay)
+	writeHand("computerHand", CompHandDisplay);
 
-	document.getElementById("message").innerHTML = "Both you and the dealer have BlackJack. Push!"
+	document.getElementById("message").innerHTML = "Both you and the dealer have BlackJack. Push!";
+
+	chips += bet;
 
 }
 
@@ -343,18 +391,6 @@ if(CheckBJ(YourHand) === true && CheckBJ(CompHand) === true){
 
 
 new_game()
-
-document.getElementById("record").rows[0].cells[0].innerHTML = "Wins"
-
-document.getElementById("record").rows[0].cells[1].innerHTML = "Loses"
-
-document.getElementById("record").rows[1].cells[0].innerHTML = 0
-
-document.getElementById("record").rows[1].cells[1].innerHTML = 0
-
-winsLosses[0] = 0
-
-winsLosses[1] = 0
 
 
 
