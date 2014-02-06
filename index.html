@@ -2,51 +2,36 @@
 
 <html>
 
+<p>Welcome to BlackJack!</p>
+<div id='computerHand'></div>
+<p></p>
+<div id='userHand'></div>
+<div id='userHand2'></div>
+<p></p>
 
+<div><button onClick='hit()'>Hit</button>
+<button onClick='stay()'>Stay</button>
+<button onClick='doubleDown()'; id="ddButton"; style="display: none;">Double Down</button>
+<button onClick='split()'; id="splitButton"; style="display: none;"; disabled="false">Split</button></div>
+<p><button onClick='new_game()'>New Hand</button></p>
+<div id='message'></div>
 
-	<p>Welcome to BlackJack!</p>
+<p><div id="chips"></div>
+<div id="bet">Bet=<input id="betInput" type="number"; size="5"; disabled ="false"></input><input id="submitBet" type="submit" value="Submit" onClick="new_game()" disabled ="false"></div></p>
 
-	<div id='computerHand'></div>
-	
-	<div id='userHand'></div>
-
-	<div id='message'></div>
-
-	<button onClick='hit()'>Hit</button>
-
-	<button onClick='stay()'>Stay</button>
-
-	<p><button onClick='new_game()'>New Game</button></p>
-
-
-	<p></p>
-
-	<table id = "record"; border = "1">
-
-		<tr>
-
-
-		</tr>
-
-		<tr>
-
-			<td></td>
-
-			<td></td>
-
-		</tr>
-
-		<tr>
-
-			<td></td>
-
-			<td></td>
-
-		</tr>
-
-	</table>
-
-
+<p></p>
+<table id = "record"; border = "1">
+<tr>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</table>
 
 	<body>
 	<script src="BJScript.js"></script>
